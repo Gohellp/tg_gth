@@ -40,6 +40,20 @@ bot.on('text',ctx=>{
 		}
 	}
 })
+bot.on("audio",ctx=>{
+	if(!ctx.update.message.audio.performer)return ctx.reply("Wrong audio file")
+	getLyrics({
+		apiKey:"zNKzOgm4D7WbbpuCj0-1K3deuhNWyMuZXHlNt-fJJOaKPuY6czgAXAqDgs7R75SC",
+		artist:ctx.update.message.audio.performer.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		title:ctx.update.message.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		optimizeQuery: true
+	}).then(lyrics=>{
+		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
+			return ctx.reply("I can't find lyrics for this song on genius.com or file has wrong artist/title")
+		}
+		ctx.reply(lyrics.replace(/\[(\w*|[А-Яа-я]*) ?-?(\w*|[А-Яа-я]*:?)?\d?( «?"?(([А-Яа-я])* *)*»? *?(\w*|[А-Яа-я]*.?)*?"?)?\]\n\n?/ug,"").slice(0,4093))
+	})
+})
 bot.launch().then(()=>{
 		console.log(`[] ${bot.botInfo.first_name}`)
 	})
