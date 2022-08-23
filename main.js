@@ -57,6 +57,20 @@ bot.on("audio",ctx=>{
 bot.launch().then(()=>{
 		console.log(`[] ${bot.botInfo.first_name}`)
 	})
+bot.on("channel_post",ctx=>{
+	if(!ctx.update.channel_post.audio)return;
+	getLyrics({
+		apiKey:"zNKzOgm4D7WbbpuCj0-1K3deuhNWyMuZXHlNt-fJJOaKPuY6czgAXAqDgs7R75SC",
+		artist:ctx.update.channel_post.audio.performer.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		title:ctx.update.channel_post.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		optimizeQuery: true
+	}).then(lyrics=>{
+		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
+			return;
+		}
+		ctx.reply(lyrics.replace(/\[(\w*|[А-Яа-я]*) ?-?(\w*|[А-Яа-я]*)?\d?( «?"?(([А-Яа-я])* *)*»?"?)?\]\n\n?/ug,"").slice(0,4093))
+	})
+})
 
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
