@@ -1,0 +1,20 @@
+{
+  "name": "tg_gth",
+  "version": "2.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/collection": "^1.1.0",
+    "genius-lyrics-api": "^3.2.0",
+    "moment": "^2.29.4",
+    "telegraf": "^4.8.6"
+  },
+  "devDependencies": {
+    "ytdl-core": "^4.11.0"
+  }
+}
