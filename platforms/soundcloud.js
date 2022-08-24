@@ -8,7 +8,6 @@ module.exports={
 			.then(async info=>{
 				scdl.download(context.update.message.text, token_sc)
 				.then(async stream=>{
-					console.log(info.artwork_url)
 					await context.replyWithAudio({
 						source:stream
 					},{
