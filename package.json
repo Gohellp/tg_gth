@@ -12,6 +12,7 @@
     "@discordjs/collection": "^1.1.0",
     "genius-lyrics-api": "^3.2.0",
     "moment": "^2.29.4",
+    "soundcloud-downloader": "^1.0.0",
     "telegraf": "^4.8.6"
   },
   "devDependencies": {
