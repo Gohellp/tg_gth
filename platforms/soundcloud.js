@@ -4,7 +4,7 @@ const scdl = require('soundcloud-downloader').default,
 module.exports={
 	name:"soundcloud",
 	execute(context){
-		if(context.update.message.text.match(/\/sets\//))return context.reply("This is not a track")
+		if(scdl.isPlaylistURL(context.update.message.text))return context.reply("This is not a track url")
 		scdl.getInfo(context.update.message.text, token_sc)
 			.then(async info=>{
 				scdl.download(context.update.message.text, token_sc)
