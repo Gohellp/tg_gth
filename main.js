@@ -4,9 +4,9 @@ const path = require('node:path'),
 	platformsFiles = fs.readdirSync(platforms_path).filter(file => file.endsWith('.js')),
 	{ getLyrics } = require("genius-lyrics-api"),
 	{Collection} = require("@discordjs/collection"),
-	{token_tg} = require("./config.json"),
+	{token_tg, test_tgtk} = require("./config.json"),
 	{Telegraf} = require ("telegraf"),
-	bot = new Telegraf(token_tg);
+	bot = new Telegraf(process.argv[2]==="test"?test_tgtk:token_tg);
 bot.platforms = new Collection();
 
 for(const file of platformsFiles){
