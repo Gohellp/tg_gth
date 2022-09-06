@@ -32,10 +32,10 @@ bot.on('text',ctx=>{
 				console.log(ctx.update.message)
 				break
 			case"/send":
-				if(args[1]||!isNaN(args[0]))
-					ctx.telegram.sendMessage(args[0]?args[0]:"-1001464640870", args.slice(1).join(" "))
-				if(ctx.update.message.reply_to_message?ctx.update.message.reply_to_message.audio:0)
-					ctx.telegram.sendAudio(args[0]?args[0]:"-1001464640870", ctx.update.message.reply_to_message.audio.file_id)
+				ctx.copyMessage(args[0]?args[0]:-1001464640870,{
+					message_id:ctx.update.message.reply_to_message.message_id,
+					from_chat_id:ctx.update.message.reply_to_message.chat.id
+				})
 				break
 		}
 	}
