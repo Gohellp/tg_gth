@@ -5,7 +5,7 @@ module.exports={
 	execute(context){
 		ytdl.getInfo(context.update.message.text)
 			.then(async info=>{
-				if(info.videoDetails.lengthSeconds>1800)return context.reply("Wrong youtube video.")//мб стоит добавить проверку на категорию, но хз. Не все песни имеют категорию "музыка"
+				if(info.videoDetails.lengthSeconds>1800)return context.reply("Video SOOOOO THICK!\nTry found out the __song__")
 				await context.replyWithAudio({
 					source:ytdl(context.update.message.text, { filter: 'audioonly' })
 				},{

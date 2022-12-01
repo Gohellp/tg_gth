@@ -13,9 +13,7 @@
     "genius-lyrics-api": "^3.2.0",
     "moment": "^2.29.4",
     "soundcloud-downloader": "^1.0.0",
-    "telegraf": "^4.8.6"
-  },
-  "devDependencies": {
-    "ytdl-core": "^4.11.0"
+    "telegraf": "^4.8.6",
+    "ytdl-core": "https://github.com/matteopolak/node-ytdl-core.git#d6b56cd67aaa38c22966b98f7b36ad3db4c90192"
   }
 }

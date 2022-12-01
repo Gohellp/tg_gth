@@ -72,5 +72,9 @@ bot.on("channel_post",ctx=>{
 	})
 })
 
+process.on('uncaughtException', error=>{
+	console.log(error+`\n${new Date()}`)
+	bot.reply(error, "1887223327")
+})
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
