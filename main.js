@@ -48,10 +48,7 @@ bot.on("audio",ctx=>{
 		title:ctx.update.message.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
 		optimizeQuery: true
 	}).then(lyrics=>{
-		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
-			return ctx.reply("I can't find lyrics for this song on genius.com or file has wrong artist/title")
-		}
-		ctx.reply(lyrics.replace(/\[(\w*|[А-Яа-я]*) ?-?(\w*|[А-Яа-я]*:?)?\d?( «?"?(([А-Яа-я])* *)*»? *?(\w*|[А-Яа-я]*.?)*?"?)?\]\n\n?/ug,"").slice(0,4093))
+		ctx.reply(lyrics?lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*\s*?\d*?»?)*?\]/ug, "").slice(0, 4093):"Sorry this song doesnt have lyrics mb.")
 	})
 })
 bot.launch().then(()=>{
@@ -68,9 +65,7 @@ bot.on("channel_post",ctx=>{
 		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
 			return;
 		}
-		ctx.reply(lyrics.replace(/\[(\w*|[А-Яа-я]*) ?-?(\w*|[А-Яа-я]*)?\d?( «?"?(([А-Яа-я])* *)*»?"?)?\]\n\n?/ug,"").slice(0,4093))
+		ctx.reply(lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*\s*?\d*?»?)*?\]/ug,"").slice(0,4093))
 	})
 })
 
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
