@@ -48,7 +48,7 @@ bot.on("audio",ctx=>{
 		title:ctx.update.message.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
 		optimizeQuery: true
 	}).then(lyrics=>{
-		ctx.reply(lyrics?lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*\-*?\s*?\d*?»?)*?\]/ug, "").slice(0, 4093):"Sorry this song doesnt have lyrics mb.")
+		ctx.reply(lyrics?lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug, "").slice(0, 4093):"Sorry this song doesnt have lyrics mb.")
 	})
 })
 bot.launch().then(()=>{
@@ -65,7 +65,7 @@ bot.on("channel_post",ctx=>{
 		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
 			return;
 		}
-		ctx.reply(lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*\-*?\s*?\d*?»?)*?\]/ug,"").slice(0,4093))
+		ctx.reply(lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug,"").slice(0,4093))
 	})
 })
 
