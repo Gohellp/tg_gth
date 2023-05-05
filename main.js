@@ -23,6 +23,31 @@ bot.url(ctx=>{
 		return  bot.platforms.get("soundcloud").execute(ctx)
 	else return ctx.reply("This's not youtube url");
 })
+bot.on("audio",ctx=>{
+	if(!ctx.update.message.audio.performer)return ctx.reply("Wrong audio file")
+	getLyrics({
+		apiKey:"zNKzOgm4D7WbbpuCj0-1K3deuhNWyMuZXHlNt-fJJOaKPuY6czgAXAqDgs7R75SC",
+		artist:ctx.update.message.audio.performer.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		title:ctx.update.message.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		optimizeQuery: true
+	}).then(lyrics=>{
+		ctx.reply(lyrics?lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug, "").slice(0, 4093):"Sorry this song doesnt have lyrics mb.")
+	})
+})
+bot.on("channel_post",ctx=>{
+	if(!ctx.update.channel_post.audio)return;
+	getLyrics({
+		apiKey:"zNKzOgm4D7WbbpuCj0-1K3deuhNWyMuZXHlNt-fJJOaKPuY6czgAXAqDgs7R75SC",
+		artist:ctx.update.channel_post.audio.performer.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		title:ctx.update.channel_post.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
+		optimizeQuery: true
+	}).then(lyrics=>{
+		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
+			return;
+		}
+		ctx.reply(lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug,"").slice(0,4093))
+	})
+})
 bot.on('text',ctx=>{
 	if(ctx.update.message.chat.id===1887223327){
 		const cmd = ctx.update.message.text.split(" ")[0],
@@ -37,37 +62,7 @@ bot.on('text',ctx=>{
 		}
 	}
 })
-bot.command("edit", ctx=>{
-	console.log("Fuck")
-	if(!ctx.update.message.reply_to_message)return ctx.reply("ERROR\nYou forgor reply to audio!!!")
-	//bot.editMessageMedia()
-})
-bot.on("audio",ctx=>{
-	if(!ctx.update.message.audio.performer)return ctx.reply("Wrong audio file")
-	getLyrics({
-		apiKey:"zNKzOgm4D7WbbpuCj0-1K3deuhNWyMuZXHlNt-fJJOaKPuY6czgAXAqDgs7R75SC",
-		artist:ctx.update.message.audio.performer.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
-		title:ctx.update.message.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
-		optimizeQuery: true
-	}).then(lyrics=>{
-		ctx.reply(lyrics?lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug, "").slice(0, 4093):"Sorry this song doesnt have lyrics mb.")
-	})
-})
 bot.launch().then(()=>{
-		console.log(`[] ${bot.botInfo.first_name}`)
-	})
-bot.on("channel_post",ctx=>{
-	if(!ctx.update.channel_post.audio)return;
-	getLyrics({
-		apiKey:"zNKzOgm4D7WbbpuCj0-1K3deuhNWyMuZXHlNt-fJJOaKPuY6czgAXAqDgs7R75SC",
-		artist:ctx.update.channel_post.audio.performer.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
-		title:ctx.update.channel_post.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
-		optimizeQuery: true
-	}).then(lyrics=>{
-		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
-			return;
-		}
-		ctx.reply(lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug,"").slice(0,4093))
-	})
+	console.log(`[] ${bot.botInfo.first_name}`)
 })
 
