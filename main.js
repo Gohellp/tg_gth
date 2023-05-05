@@ -1,13 +1,7 @@
 const path = require('node:path'),
 	fs = require('node:fs'),
-	platforms_path = {"platforms":path.join(__dirname, 'platforms'), "source":path.join(__dirname, 'source')},
-	files = function (){
-		let temp_={};
-		for(const key in platforms_path){
-			temp_[key]=fs.readdirSync(platforms_path[key]).filter(file => file.endsWith('.js'))
-		}
-		return temp_;
-	}(),
+	platforms_path = path.join(__dirname, 'platforms'),
+	platformsFiles = fs.readdirSync(platforms_path).filter(file => file.endsWith('.js')),
 	{ getLyrics } = require("genius-lyrics-api"),
 	{Collection} = require("@discordjs/collection"),
 	{token_tg, test_tgtk} = require("./config.json"),
@@ -15,17 +9,11 @@ const path = require('node:path'),
 	bot = new Telegraf(process.argv[2]==="test"?test_tgtk:token_tg);
 bot.platforms = new Collection();
 
-for(const key in files){
-	for(const files_ in files[key]){
-		for(const file in files_){
-			const file_path = path.join(platforms_path[key], file);
-			const codes = require(file_path);
-			bot[key].set(codes.name, codes)
-		}
-	}
+for(const file of platformsFiles){
+	const file_path = path.join(platforms_path, file);
+	const platforms = require(file_path);
+	bot.platforms.set(platforms.name, platforms)
 }
-
-console.log(bot)
 
 bot.start(ctx=>ctx.reply("I'm the part of project_gth\n\nSend me url on song on youtube and i send you audio file!\nSend me audio file and i try to find lyrics!"))
 bot.url(ctx=>{
@@ -40,9 +28,6 @@ bot.on('text',ctx=>{
 		const cmd = ctx.update.message.text.split(" ")[0],
 			args = ctx.update.message.text.split(" ").slice(1)
 		switch(cmd){
-			case"/test":
-				console.log(ctx.update.message)
-				break
 			case"/send":
 				ctx.copyMessage(args[0]?args[0]:-1001464640870,{
 					message_id:ctx.update.message.reply_to_message.message_id,
@@ -51,6 +36,11 @@ bot.on('text',ctx=>{
 				break
 		}
 	}
+})
+bot.command("edit", ctx=>{
+	console.log("Fuck")
+	if(!ctx.update.message.reply_to_message)return ctx.reply("ERROR\nYou forgor reply to audio!!!")
+	//bot.editMessageMedia()
 })
 bot.on("audio",ctx=>{
 	if(!ctx.update.message.audio.performer)return ctx.reply("Wrong audio file")
