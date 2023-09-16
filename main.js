@@ -16,12 +16,18 @@ for(const file of platformsFiles){
 }
 
 bot.start(ctx=>ctx.reply("I'm the part of project_gth\n\nSend me url on song on youtube and i send you audio file!\nSend me audio file and i try to find lyrics!"))
-bot.url(ctx=>{
-	if(ctx.update.message.text.match(/.?youtu.?be(.com)?\//))
-		return bot.platforms.get("youtube").execute(ctx)
-	else if(ctx.update.message.text.match(/soundcloud.?[com]?/))
-		return  bot.platforms.get("soundcloud").execute(ctx)
-	else return ctx.reply("This's not youtube url");
+bot.url(ctx => {
+	let Links = ctx.update.message.text.match(/(?:http(?:s)?:\/\/)(?:(?:(?:www.)?youtu.?be(?:.com)?)|(?:soundcloud.?(?:com)?)).*$/gmi)
+
+	if (Links.length === 0) {
+		return ctx.reply("I think this isn't souncloud or youtube url. Try again ;)")
+	}
+	for (let i = 0; i < Links.length; i++) {
+		if (Links[i].match(/.?youtu.?be(.com)?\//))
+			bot.platforms.get("youtube").execute(ctx,Links[i])
+		else if (Links[i].match(/soundcloud.?[com]?/))
+			bot.platforms.get("soundcloud").execute(ctx,Links[i])
+	}
 })
 bot.on("audio",ctx=>{
 	if(!ctx.update.message.audio.performer)return ctx.reply("Wrong audio file")
@@ -42,9 +48,6 @@ bot.on("channel_post",ctx=>{
 		title:ctx.update.channel_post.audio.title.replace(/ ?\((\w)*.? ? (\w?[А-Яа-я]?)*\)/ui,""),
 		optimizeQuery: true
 	}).then(lyrics=>{
-		if(!lyrics||lyrics.startsWith("What parallel courses did Bloom and Stephen follow returning?")){
-			return;
-		}
 		ctx.reply(lyrics.replace(/\[(«?[\p{Alpha}\p{M}\p{Nd}\p{Pc}\p{Join_C}]*-*?\s*?\d*?»?)*?\]/ug,"").slice(0,4093))
 	})
 })
