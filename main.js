@@ -17,7 +17,7 @@ for(const file of platformsFiles){
 
 bot.start(ctx=>ctx.reply("I'm the part of project_gth\n\nSend me url on song on youtube and i send you audio file!\nSend me audio file and i try to find lyrics!"))
 bot.url(ctx => {
-	let Links = ctx.update.message.text.match(/(?:http(?:s)?:\/\/)(?:(?:(?:www.)?youtu.?be(?:.com)?)|(?:soundcloud.?(?:com)?)).*$/gmi)
+	let Links = ctx.update.message.text.match(/(?:http(?:s)?:\/\/)(?:(?:(?:www.|music.)?youtu.?be(?:.com)?)|(?:soundcloud.?(?:com)?)).*$/gmi)
 
 	if (Links.length === 0) {
 		return ctx.reply("I think this isn't souncloud or youtube url. Try again ;)")
