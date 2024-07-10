@@ -1,23 +1,35 @@
-const scdl = require('soundcloud-downloader').default,
-	{token_sc} = require('../config.json');
+const {sc_client_id} = require('../config.json');
+const scdl = require("soundcloud-downloader").create({
+  clientID: sc_client_id
+});
+
+
+async function sendTrack(ctx, info) {
+  let stream = await scdl.download(info.permalink_url);
+  let _ = await ctx.sendAudio(
+    {
+      source: stream
+    },
+    {
+      performer: info.publisher_metadata.artist,
+      title: info.title,
+      thumbnail: { URL: info.artwork_url }
+    }
+  );
+}
 
 module.exports={
 	name:"soundcloud",
-	execute(context,link){
-		return context.reply("Sorry currently soundcloud unavailable")
-		if(scdl.isPlaylistURL(link))return context.reply("I can't work with playlists")
-		scdl.getInfo(link, token_sc)
-			.then(async info=>{
-				scdl.download(info.permalink_url, token_sc)
-				.then(async stream=>{
-					await context.replyWithAudio({
-						source:stream
-					},{
-						performer:info.publisher_metadata.artist,
-						title:info.title,
-						thumb:info.artwork_url
-					})
-				})
-			})
+	regex: /soundcloud/,
+  fullRegex: /(?:https?\:\/\/)(?:soundcloud\.com)\/(?:[^\s]+)\/(?:[^\s]+)/gmi,
+  matchStrings: ["soundcloud"],
+	async execute(ctx, link){
+  	if(scdl.isPlaylistURL(link)) {
+      await ctx.reply("I can't work with playlists");
+      return;
+    } else {
+      let info = await scdl.getInfo(link);
+      await sendTrack(ctx, info);
+    }
 	}
 }
